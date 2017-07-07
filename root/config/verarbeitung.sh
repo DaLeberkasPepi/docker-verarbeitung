@@ -41,14 +41,14 @@ if [ "$youngfile" = false ] ; then
   find /downloads/Remux/* -empty -type d -delete &>/dev/null
   
   # Adding Tags
-  find /downloads/RSScrawler/ -type f -name '*.mkv' | while read filename
-  do
-    echo "[Tagge $filename]"
-    mkvpropedit "$filename" --edit info --set title="RiX" --edit track:v1 --set name="RiX" --edit track:a1 --set name="RiX" &>/dev/null
-    mkvpropedit "$filename" --edit info --set title="RiX" --edit track:v1 --set name="RiX" --edit track:a1 --set name="RiX" --edit track:a2 --set name="RiX" &>/dev/null
-    mkvpropedit "$filename" --edit info --set title="RiX" --edit track:v1 --set name="RiX" --edit track:a1 --set name="RiX" --edit track:a2 --set name="RiX" --edit track:a3 --set name="RiX" &>/dev/null
-  done
-  find /downloads/RSScrawler/Drone/ -name '*.mkv' -exec mv {} /plex/.Temp/Drone/ \; &>/dev/null
+  # find /downloads/RSScrawler/ -type f -name '*.mkv' | while read filename
+  # do
+  #   echo "[Tagge $filename]"
+  #   mkvpropedit "$filename" --edit info --set title="RiX" --edit track:v1 --set name="RiX" --edit track:a1 --set name="RiX" &>/dev/null
+  #   mkvpropedit "$filename" --edit info --set title="RiX" --edit track:v1 --set name="RiX" --edit track:a1 --set name="RiX" --edit track:a2 --set name="RiX" &>/dev/null
+  #   mkvpropedit "$filename" --edit info --set title="RiX" --edit track:v1 --set name="RiX" --edit track:a1 --set name="RiX" --edit track:a2 --set name="RiX" --edit track:a3 --set name="RiX" &>/dev/null
+  # done
+  # find /downloads/RSScrawler/Drone/ -name '*.mkv' -exec mv {} /plex/.Temp/Drone/ \; &>/dev/null
   
   # Move YouTube Videos
   if [[ -d  /downloads/RSScrawler/YouTube ]]; then
@@ -57,37 +57,37 @@ if [ "$youngfile" = false ] ; then
   
   # Move Movies/Shows for Remuxing
   if [[ -d  /downloads/RSScrawler/Remux ]]; then
-    filebot -script /config/rename.groovy "/downloads/RSScrawler/Remux" --output "/downloads/Remux" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def music=n --def skipExtract=y --def clean=y --log info --lang "de" --def "seriesFormat=/downloads/Remux/Serien/{n}/{'S'+s.pad(2)}/{s00e00} - {t} - {source}-{vf}" "movieFormat=/downloads/Remux/{fn =~ /3d/ ? '3D-Filme' : 'Filme'}/{n} ({y}){fn =~ /3d/ ? ' [3D]' : ''}/{n} ({y}){fn =~ /3d/ ? ' [3D].H-SBS' : ''}" --def "animeFormat=/downloads/Remux/Serien/{n}/{'S'+s.pad(2)}/{s00e00} - {t} - {source}-{vf}" &>/dev/null
+    filebot -script /config/rename.groovy "/downloads/RSScrawler/Remux" --output "/downloads/Remux" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def music=n --def skipExtract=y --def clean=y --log info --lang "de"  &>/dev/null
   fi
  
   # Move 3D-Movies
   if [[ -d  /downloads/RSScrawler/3Dcrawler ]]; then
-    filebot -script /config/rename.groovy "/downloads/RSScrawler/3Dcrawler" --output "/plex/.Temp" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def music=n --def skipExtract=y --def clean=y --log info --lang "de" --def "seriesFormat=/plex/.Temp/Serien/{n}/{'S'+s.pad(2)}/{s00e00} - {t} - {source}-{vf}" "movieFormat=/plex/.Temp/3D-Filme/{n} ({y}) [3D]/{n} ({y}) [3D].H-SBS" --def "animeFormat=/plex/.Temp/Serien/{n}/{'S'+s.pad(2)}/{s00e00} - {t} - {source}-{vf}" &>/dev/null
+    filebot -script /config/rename.groovy "/downloads/RSScrawler/3Dcrawler" --output "/plex/.Temp" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def music=n --def skipExtract=y --def clean=y --log info --lang "de"  &>/dev/null
   fi
   
   # Move Movies/Shows for Sorting
-  filebot -script /config/rename.groovy "/downloads/RSScrawler" --output "/plex/.Temp" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def "ignore=Remux|YouTube|3Dcrawler" --def music=n --def skipExtract=y --def clean=y --log info --lang "de" --def "seriesFormat=/plex/.Temp/Serien/{n}/{'S'+s.pad(2)}/{s00e00} - {t} - {source}-{vf}" "movieFormat=/plex/.Temp/{fn =~ /3d/ ? '3D-Filme' : 'Filme'}/{n} ({y}){fn =~ /3d/ ? ' [3D]' : ''}/{n} ({y}){fn =~ /3d/ ? ' [3D].H-SBS' : ''}" --def "animeFormat=/plex/.Temp/Serien/{n}/{'S'+s.pad(2)}/{s00e00} - {t} - {source}-{vf}" &>/dev/null
+  filebot -script /config/rename.groovy "/downloads/RSScrawler" --output "/plex/.Temp" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def "ignore=Remux|YouTube|3Dcrawler" --def music=n --def skipExtract=y --def clean=y --log info --lang "de"  &>/dev/null
 
   # Rename Show Qualities
-  find /plex/.Temp -type f -name '*- -480p.mkv' | while read f; do mv -v "$f" "${f%- -480p.mkv}- DVDRip-480p.mkv"; done
-  find /plex/.Temp -type f -name '*- -576p.mkv' | while read f; do mv -v "$f" "${f%- -576p.mkv}- DVDRip-480p.mkv"; done
-  find /plex/.Temp -type f -name '*- -720p.mkv' | while read f; do mv -v "$f" "${f%- -720p.mkv}- WEBDL-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- WEB-DL-576p.mkv' | while read f; do mv -v "$f" "${f%- WEB-DL-576p.mkv}- WEBDL-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- WEBRip-720p.mkv' | while read f; do mv -v "$f" "${f%- WEBRip-720p.mkv}- WEBDL-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- Web-DL-720p.mkv' | while read f; do mv -v "$f" "${f%- Web-DL-720p.mkv}- WEBDL-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- WEB-DL-720p.mkv' | while read f; do mv -v "$f" "${f%- WEB-DL-720p.mkv}- WEBDL-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- WEB.DL-720p.mkv' | while read f; do mv -v "$f" "${f%- WEB.DL-720p.mkv}- WEBDL-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- ithd-720p.mkv' | while read f; do mv -v "$f" "${f%- ithd-720p.mkv}- WEBDL-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- iTunesHD-720p.mkv' | while read f; do mv -v "$f" "${f%- iTunesHD-720p.mkv}- WEBDL-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- AmazonHD-720p.mkv' | while read f; do mv -v "$f" "${f%- AmazonHD-720p.mkv}- WEBDL-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- NetflixHD-720p.mkv' | while read f; do mv -v "$f" "${f%- NetflixHD-720p.mkv}- WEBDL-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- NetflixUHD-720p.mkv' | while read f; do mv -v "$f" "${f%- NetflixUHD-720p.mkv}- WEBDL-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- BD-720p.mkv' | while read f; do mv -v "$f" "${f%- BD-720p.mkv}- BluRay-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- BDRip-720p.mkv' | while read f; do mv -v "$f" "${f%- BDRip-720p.mkv}- BluRay-720p.mkv"; done
-  find /plex/.Temp -type f -name '*- WEBRip-1080p.mkv' | while read f; do mv -v "$f" "${f%- WEBRip-1080p.mkv}- WEBDL-1080p.mkv"; done
-  find /plex/.Temp -type f -name '*- WEB-DL-1080p.mkv' | while read f; do mv -v "$f" "${f%- WEB-DL-1080p.mkv}- WEBDL-1080p.mkv"; done
-  find /plex/.Temp -type f -name '*- -1080p.mkv' | while read f; do mv -v "$f" "${f%- -1080p.mkv}- BluRay-1080p.mkv"; done
-  find /plex/.Temp -type f -name '*- BD-1080p.mkv' | while read f; do mv -v "$f" "${f%*- BD-1080p.mkv}- BluRay-1080p.mkv"; done
+  # find /plex/.Temp -type f -name '*- -480p.mkv' | while read f; do mv -v "$f" "${f%- -480p.mkv}- DVDRip-480p.mkv"; done
+  # find /plex/.Temp -type f -name '*- -576p.mkv' | while read f; do mv -v "$f" "${f%- -576p.mkv}- DVDRip-480p.mkv"; done
+  # find /plex/.Temp -type f -name '*- -720p.mkv' | while read f; do mv -v "$f" "${f%- -720p.mkv}- WEBDL-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- WEB-DL-576p.mkv' | while read f; do mv -v "$f" "${f%- WEB-DL-576p.mkv}- WEBDL-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- WEBRip-720p.mkv' | while read f; do mv -v "$f" "${f%- WEBRip-720p.mkv}- WEBDL-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- Web-DL-720p.mkv' | while read f; do mv -v "$f" "${f%- Web-DL-720p.mkv}- WEBDL-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- WEB-DL-720p.mkv' | while read f; do mv -v "$f" "${f%- WEB-DL-720p.mkv}- WEBDL-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- WEB.DL-720p.mkv' | while read f; do mv -v "$f" "${f%- WEB.DL-720p.mkv}- WEBDL-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- ithd-720p.mkv' | while read f; do mv -v "$f" "${f%- ithd-720p.mkv}- WEBDL-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- iTunesHD-720p.mkv' | while read f; do mv -v "$f" "${f%- iTunesHD-720p.mkv}- WEBDL-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- AmazonHD-720p.mkv' | while read f; do mv -v "$f" "${f%- AmazonHD-720p.mkv}- WEBDL-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- NetflixHD-720p.mkv' | while read f; do mv -v "$f" "${f%- NetflixHD-720p.mkv}- WEBDL-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- NetflixUHD-720p.mkv' | while read f; do mv -v "$f" "${f%- NetflixUHD-720p.mkv}- WEBDL-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- BD-720p.mkv' | while read f; do mv -v "$f" "${f%- BD-720p.mkv}- BluRay-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- BDRip-720p.mkv' | while read f; do mv -v "$f" "${f%- BDRip-720p.mkv}- BluRay-720p.mkv"; done
+  # find /plex/.Temp -type f -name '*- WEBRip-1080p.mkv' | while read f; do mv -v "$f" "${f%- WEBRip-1080p.mkv}- WEBDL-1080p.mkv"; done
+  # find /plex/.Temp -type f -name '*- WEB-DL-1080p.mkv' | while read f; do mv -v "$f" "${f%- WEB-DL-1080p.mkv}- WEBDL-1080p.mkv"; done
+  # find /plex/.Temp -type f -name '*- -1080p.mkv' | while read f; do mv -v "$f" "${f%- -1080p.mkv}- BluRay-1080p.mkv"; done
+  # find /plex/.Temp -type f -name '*- BD-1080p.mkv' | while read f; do mv -v "$f" "${f%*- BD-1080p.mkv}- BluRay-1080p.mkv"; done
 
   # Verschiebe 3D-Filme
   ser=/plex/.Temp/3D-Filme
