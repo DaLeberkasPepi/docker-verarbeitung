@@ -57,16 +57,16 @@ if [ "$youngfile" = false ] ; then
   
   # Move Movies/Shows for Remuxing
   if [[ -d  /downloads/RSScrawler/Remux ]]; then
-    filebot -script /config/rename.groovy "/downloads/RSScrawler/Remux" --output "/downloads/Remux" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def music=n --def skipExtract=y --def clean=y --log info --lang "de"  &>/dev/null
+    filebot -script /config/rename.groovy "/downloads/RSScrawler/Remux" --output "/downloads/Remux" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def music=n --def skipExtract=y --def clean=y --log info  &>/dev/null
   fi
  
   # Move 3D-Movies
   if [[ -d  /downloads/RSScrawler/3Dcrawler ]]; then
-    filebot -script /config/rename.groovy "/downloads/RSScrawler/3Dcrawler" --output "/plex/.Temp" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def music=n --def skipExtract=y --def clean=y --log info --lang "de"  &>/dev/null
+    filebot -script /config/rename.groovy "/downloads/RSScrawler/3Dcrawler" --output "/plex/.Temp" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def music=n --def skipExtract=y --def clean=y --log info  &>/dev/null
   fi
   
   # Move Movies/Shows for Sorting
-  filebot -script /config/rename.groovy "/downloads/RSScrawler" --output "/plex/.Temp" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def "ignore=Remux|YouTube|3Dcrawler" --def music=n --def skipExtract=y --def clean=y --log info --lang "de"  &>/dev/null
+  filebot -script /config/rename.groovy "/downloads/RSScrawler" --output "/plex/.Temp" --log-file "/log/Verarbeitung.log" --action move --conflict override -non-strict --def "ignore=Remux|YouTube|3Dcrawler" --def music=n --def skipExtract=y --def clean=y --log info  &>/dev/null
 
   # Rename Show Qualities
   # find /plex/.Temp -type f -name '*- -480p.mkv' | while read f; do mv -v "$f" "${f%- -480p.mkv}- DVDRip-480p.mkv"; done
